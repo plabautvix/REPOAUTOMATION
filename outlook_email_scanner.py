@@ -77,10 +77,10 @@ def buscar_email_mais_recente(conta: Account) -> dict | None:
     Retorna um dicionário com os dados do email ou None se não encontrar.
     """
     agora = datetime.now(tz=FUSO_BRASILIA)
-    inicio = agora - timedelta(days=10)
-    inicio_debug = agora - timedelta(days=10)
+    inicio = agora - timedelta(hours=24)
+    inicio_debug = agora - timedelta(hours=24)
 
-    # Busca apenas pelo remetente nos últimos 10 dias (debug, sem filtrar assunto)
+    # Busca apenas pelo remetente nas últimas 24h (debug, sem filtrar assunto)
     debug_filtro = (
         Q(sender__icontains=FILTRO_REMETENTE)
         & Q(datetime_received__gte=inicio_debug)
@@ -93,7 +93,7 @@ def buscar_email_mais_recente(conta: Account) -> dict | None:
     with open(ARQUIVO_DEBUG, "a", encoding="utf-8") as f:
         f.write(f"\n{'=' * 70}\n")
         f.write(f"Execução em: {timestamp}\n")
-        f.write(f"Janela: últimos 10 dias | Remetente filtrado: {FILTRO_REMETENTE}\n")
+        f.write(f"Janela: últimas 24h | Remetente filtrado: {FILTRO_REMETENTE}\n")
         f.write(f"Emails encontrados do remetente: {len(emails_remetente)}\n")
         f.write(f"{'=' * 70}\n")
         for i, email in enumerate(emails_remetente, 1):
